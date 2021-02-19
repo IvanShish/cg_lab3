@@ -2,11 +2,13 @@ public class Point {
     private double x;
     private double y;
     private int number;
+    private double weight;
 
-    public Point(double x, double y, int number) {
+    public Point(double x, double y, int number, double weight) {
         this.x = x;
         this.y = y;
         this.number = number;
+        this.weight = weight;
     }
 
     public double getX() {
@@ -41,6 +43,14 @@ public class Point {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
     @Override

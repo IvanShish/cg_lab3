@@ -9,6 +9,7 @@ public class MainWindow extends JFrame {
     private JComboBox<Point> pointSelector;
     private JSlider xSlider;
     private JSlider ySlider;
+    private JSlider wSlider;
 
     private Point selectedPoint;
 
@@ -17,8 +18,9 @@ public class MainWindow extends JFrame {
 
         //Настройка для NURBS
         NurbsManager nurbsManager = new NurbsManager(new Point[]{
-                new Point(-0.8, -0.5, 0), new Point(-0.5, 0, 1), new Point(0, 0.4, 2),
-                new Point(0.3, 0.2, 3), new Point(0.6, -0.2, 4), new Point(0.8, 0, 5)});
+                new Point(-0.8, -0.5, 0, 1), new Point(-0.5, 0, 1, 1), new Point(0, 0.4, 2, 1),
+                new Point(0.3, 0.2, 3, 1), new Point(0.6, -0.2, 4, 1), new Point(0.8, 0, 5, 1),
+                new Point(0.9, 0.5, 6, 1)});
 
         //Главная панель
         JPanel grid = new JPanel();
@@ -47,12 +49,14 @@ public class MainWindow extends JFrame {
             selectedPoint = nurbsManager.getControlPoints()[pointSelector.getSelectedIndex()];
             xSlider.setValue((int)(100 * selectedPoint.getX()));
             ySlider.setValue((int)(100 * selectedPoint.getY()));
+            wSlider.setValue((int)(100 * selectedPoint.getWeight()));
         });
         buttonsPanel.add(pointSelector);
         selectedPoint = nurbsManager.getControlPoints()[0];
 
         xSlider = new JSlider(-100, 100, (int)(selectedPoint.getX() * 100));
         ySlider = new JSlider(-100, 100, (int)(selectedPoint.getY() * 100));
+        wSlider = new JSlider(0, 100, (int)(selectedPoint.getWeight() * 100));
         xSlider.addChangeListener((e) -> {
             selectedPoint.setX(xSlider.getValue()/100f);
             gljpanel.display();
@@ -61,9 +65,14 @@ public class MainWindow extends JFrame {
             selectedPoint.setY(ySlider.getValue()/100f);
             gljpanel.display();
         });
+        wSlider.addChangeListener((e) -> {
+            selectedPoint.setWeight(wSlider.getValue()/100f);
+            gljpanel.display();
+        });
         buttonsPanel.add(xSlider);
         buttonsPanel.add(ySlider);
-
+        buttonsPanel.add(new JLabel("Weight"));
+        buttonsPanel.add(wSlider);
 
         this.getContentPane().add(grid);
         this.setSize(1000, 500);
